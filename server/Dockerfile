@@ -2,7 +2,7 @@ FROM oberthur/docker-ubuntu-java:jdk8_8.65.17
 
 MAINTAINER Dawid Malinowski <d.malinowski@oberthur.com>
 
-ENV JVM_OPTS -server -Dcassandra.compaction.priority=1 -XX:+UseCompressedOops
+ENV JVM_OPTS -server -Dcassandra.compaction.priority=1 -XX:+UseCompressedOops -XX:+AlwaysPreTouch
 ENV CASSANDRA_VERSION 2.1.11
 ENV DATASTAX_AGENT_VERSION 5.2.5
 
