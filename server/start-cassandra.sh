@@ -3,11 +3,13 @@
 if [ "$DC_NAME" != "" ]
 then
  sed -i -e "s/dc=DC1/dc=${DC_NAME}/" /etc/cassandra/cassandra-rackdc.properties
+ sed -i 's/^# prefer_local=true/prefer_local=true/' /etc/cassandra/cassandra-rackdc.properties
 fi
 
 if [ "$RACK_NAME" != "" ]
 then
  sed -i -e "s/rack=RAC1/rack=${DC_NAME}/" /etc/cassandra/cassandra-rackdc.properties
+ sed -i -e 's/^# prefer_local=true/prefer_local=true/' /etc/cassandra/cassandra-rackdc.properties
 fi
 
 if [ "$OPSCENTER_IP" != "" ]
