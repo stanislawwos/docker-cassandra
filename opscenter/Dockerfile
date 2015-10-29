@@ -2,8 +2,8 @@ FROM oberthur/docker-ubuntu-java:jdk8_8.65.17
 
 MAINTAINER Dawid Malinowski <d.malinowski@oberthur.com>
 
-ENV JVM_OPTS -server -Dcassandra.compaction.priority=1 -XX:+UseCompressedOops
-ENV OPSCENTER_VERSION 5.2.2
+ENV JVM_OPTS="-server -Dcassandra.compaction.priority=1 -XX:+UseCompressedOops -XX:+AlwaysPreTouch" \
+  OPSCENTER_VERSION=5.2.2
 
 RUN echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list \
     && curl -L http://debian.datastax.com/debian/repo_key | apt-key add - \
