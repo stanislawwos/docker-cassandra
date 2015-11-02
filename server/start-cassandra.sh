@@ -11,7 +11,7 @@ if [ "$SNITCH" != "" ]; then
 fi
 
 if [ "$OPSCENTER_IP" != "" ]; then
-  echo -e "stomp_interface: ${$OPSCENTER_IP}" >> /var/lib/datastax-agent/conf/address.yaml
+  echo -e "stomp_interface: ${$OPSCENTER_IP}" > /var/lib/datastax-agent/conf/address.yaml
 fi
 
 if [ "$OPSCENTER_USE_SSL" != "" ]; then
