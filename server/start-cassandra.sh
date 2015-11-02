@@ -11,11 +11,11 @@ if [ "$SNITCH" != "" ]; then
 fi
 
 if [ "$OPSCENTER_IP" != "" ]; then
-  echo -e "stomp_interface: ${$OPSCENTER_IP}" > /var/lib/datastax-agent/conf/address.yaml
+  echo "stomp_interface: ${$OPSCENTER_IP}" > /var/lib/datastax-agent/conf/address.yaml
 fi
 
 if [ "$OPSCENTER_USE_SSL" != "" ]; then
-  echo -e "use_ssl: ${OPSCENTER_USE_SSL}" >> /var/lib/datastax-agent/conf/address.yaml
+  echo "use_ssl: ${OPSCENTER_USE_SSL}" >> /var/lib/datastax-agent/conf/address.yaml
 fi
 
 if [ "$CLUSTER_NAME" != "" ]; then
