@@ -12,6 +12,7 @@ RUN echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/ap
     && sed -i -e "s/^rpc_address: localhost/# rpc_address: localhost/" /etc/cassandra/cassandra.yaml \
     && sed -i -e "s/# rpc_interface: eth1/rpc_interface: eth0/" /etc/cassandra/cassandra.yaml \
     && sed -i -e 's/<appender-ref ref="FILE" \/>/\r/' /etc/cassandra/logback.xml \
+    && echo "[connection]\nclient_timeout=120" >> /root/.cassandra/cqlshrc \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean 
 
