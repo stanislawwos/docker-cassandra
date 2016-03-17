@@ -1,22 +1,9 @@
 #!/bin/bash
 
-# DATASTAX AGENT
-if [ "$OPSCENTER_IP" != "" ]; then
-  echo "stomp_interface: ${$OPSCENTER_IP}" > /var/lib/datastax-agent/conf/address.yaml
-fi
-
-if [ "$OPSCENTER_USE_SSL" != "" ]; then
-  echo "use_ssl: ${OPSCENTER_USE_SSL}" >> /var/lib/datastax-agent/conf/address.yaml
-fi
-
-if [ "$BROADCAST_ADDRESS" != "" ]; then
-  echo "local_interface: ${BROADCAST_ADDRESS}" >> /var/lib/datastax-agent/conf/address.yaml
-fi
-
 # CASSANDRA
 if [ "$DC_NAME" != "" ] && [ "$RACK_NAME" != "" ]; then
-  sed -i -e "s/dc=DC1/dc=${DC_NAME}/" /etc/cassandra/cassandra-rackdc.properties
-  sed -i -e "s/rack=RAC1/rack=${DC_NAME}/" /etc/cassandra/cassandra-rackdc.properties
+  sed -i -e "s/dc=dc1/dc=${DC_NAME}/" /etc/cassandra/cassandra-rackdc.properties
+  sed -i -e "s/rack=rack1/rack=${RACK_NAME}/" /etc/cassandra/cassandra-rackdc.properties
   sed -i -e 's/^# prefer_local=true/prefer_local=true/' /etc/cassandra/cassandra-rackdc.properties
 fi
 
@@ -36,7 +23,7 @@ done
 
 if [ "$SEEDS_LIST" != "" ]; then
   SEEDS=$( echo ${SEEDS_LIST} | tr ' ' ', ' )
-  sed -i -e "s/- seeds: \"127.0.0.1\"/- seeds: ${SEEDS}\"/" /etc/cassandra/cassandra.yaml
+  sed -i -e "s/- seeds: \"127.0.0.1\"/- seeds: \"${SEEDS}\"/" /etc/cassandra/cassandra.yaml
 fi
 
 if [ "$BROADCAST_ADDRESS" != "" ]; then
@@ -52,5 +39,8 @@ sed -i -e "s/# listen_interface: eth0/listen_interface: eth0/" /etc/cassandra/ca
 sed -i -e "s/# rpc_address: localhost/rpc_address: 0.0.0.0/" /etc/cassandra/cassandra.yaml
 sed -i -e "s/rpc_interface: eth0/# rpc_interface: eth1/" /etc/cassandra/cassandra.yaml
 
-(sleep 10 && service datastax-agent start &)
+if [ -e /etc/cassandra/cassandra-topology.properties ]; then
+  mv /etc/cassandra/cassandra-topology.properties /etc/cassandra/cassandra-topology.properties.notused
+fi
+
 exec /usr/sbin/cassandra -f -p /var/run/cassandra/cassandra.pid
