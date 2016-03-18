@@ -17,6 +17,8 @@ Below you can find a list of files with ENV vars
 - **BROADCAST_ADDRESS** - address to broadcast to other Cassandra nodes / the same for address.yaml
 - **CLUSTER_NAME** - name of the cluster
 - **BROADCAST_RPC** - the address or interface to bind the Thrift RPC service and native transport server to
+- **AUTHENTICATOR** - allows to change an authenticator (default: AllowAllAuthenticator)
+- **AUTHORIZER** - allows to change an authorizer (default: AllowAllAuthorizer)
 - **SEED_1** - sets 1st seed ip address for seed provider 
 - **SEED_2** - sets 2nd seed ip address for seed provider (optional)
 - **SEED_N** - sets N seed ip address for seed provider (optional)
