@@ -28,6 +28,14 @@ if [ "$CLUSTER_NAME" != "" ]; then
   sed -i -e "s/cluster_name: 'Test Cluster'/cluster_name: '${CLUSTER_NAME}'/" /etc/cassandra/cassandra.yaml
 fi
 
+if [ "$AUTHENTICATOR" != "" ]; then
+  sed -i -e "s/authenticator: AllowAllAuthenticator/authenticator: $AUTHENTICATOR/" /etc/cassandra/cassandra.yaml
+fi
+
+if [ "$AUTHORIZER" != "" ]; then
+  sed -i -e "s/authorizer: AllowAllAuthorizer/authorizer: $AUTHORIZER/" /etc/cassandra/cassandra.yaml
+fi
+
 for SEED in $( env |grep SEED_ |sort |awk 'match($0, /SEED_[0-9]+/) { print substr( $0, RSTART, RLENGTH )}' |uniq )
 do
   CURRENT=$( env |grep ${SEED} |sed 's/^[^=]*=//' )
