@@ -1,4 +1,4 @@
-# Docker image containing Cassandra Server and OPSCeneter
+# Docker image containing Cassandra Server
 Basic Docker image to run Cassandra as user app (999:999)
 
 Perf settings:
