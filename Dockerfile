@@ -27,7 +27,7 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && curl -L http://debian.datastax.com/debian/repo_key | apt-key add - \
         && apt-get update \
         && apt-get install --assume-yes \
-              python python-support \
+              python python-support python-pip \
               dsc21=${CASSANDRA_VERSION}-1 \
               cassandra=${CASSANDRA_VERSION} \
               cassandra-tools=${CASSANDRA_VERSION} \
