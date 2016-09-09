@@ -39,6 +39,14 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && echo 'JVM_OPTS="$JVM_OPTS $CUSTOM_JVM_OPTS"' >> "$CASSANDRA_CONFIG"/cassandra-env.sh
 
+## fix for https://issues.apache.org/jira/browse/CASSANDRA-11850
+RUN        pip install --upgrade pip \
+        && pip install setuptools \
+        && pip install cassandra-driver \
+        && rm /usr/share/cassandra/lib/cassandra-driver-internal-only* \
+        && curl -L https://github.com/apache/cassandra/raw/cassandra-2.1/lib/cassandra-driver-internal-only-2.7.2-2fc8a2b.zip > /usr/share/cassandra/lib/cassandra-driver-internal-only-2.7.2-2fc8a2b.zip
+
+
 ENTRYPOINT ["/docker-entrypoint.sh", "cassandra", "-f"]
 
 VOLUME ["/etc/cassandra", "/var/lib/cassandra/data", "/var/lib/cassandra/commitlog", "/var/log/cassandra"]
