@@ -65,9 +65,6 @@ if [ "$1" = 'cassandra' ]; then
 		fi
 	done
 
-  # fix cassandra-env.sh for jvm patch version > 99
-  sed -i "s/\"\$JVM_PATCH_VERSION\"\\ \\\\<\\ \"25\"/\"\$JVM_PATCH_VERSION\"\\ \\-lt\\ \"25\"/" /etc/cassandra/cassandra-env.sh
-
 fi
 
 exec "$@"
