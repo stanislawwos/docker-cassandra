@@ -2,7 +2,7 @@ FROM oberthur/docker-ubuntu-java:jdk8_8.92.14
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION=1.9 \
-    CASSANDRA_VERSION=3.0.8 \
+    CASSANDRA_VERSION=3.0.9 \
     CASSANDRA_CONFIG=/etc/cassandra
 
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
@@ -27,7 +27,6 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && curl -L http://debian.datastax.com/debian/repo_key | apt-key add - \
         && apt-get update \
         && apt-get install --assume-yes \
-              python python-support python-pip \
               dsc30=${CASSANDRA_VERSION}-1 \
               cassandra=${CASSANDRA_VERSION} \
               cassandra-tools=${CASSANDRA_VERSION} \
@@ -38,14 +37,6 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && echo 'JVM_OPTS="$JVM_OPTS $CUSTOM_JVM_OPTS"' >> "$CASSANDRA_CONFIG"/cassandra-env.sh
-
-## fix for https://issues.apache.org/jira/browse/CASSANDRA-11850
-RUN        pip install --upgrade pip \
-        && pip install setuptools \
-        && pip install cassandra-driver \
-        && rm /usr/share/cassandra/lib/cassandra-driver-internal-only* \
-        && curl -L https://github.com/apache/cassandra/raw/cassandra-3.0/lib/cassandra-driver-internal-only-3.5.0.post0-d8d0456.zip > /usr/share/cassandra/lib/cassandra-driver-internal-only-3.5.0.post0-d8d0456.zip
-
 
 ENTRYPOINT ["/docker-entrypoint.sh", "cassandra", "-f"]
 
