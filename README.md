@@ -1,7 +1,8 @@
 # Docker image containing Cassandra Server
 
-Environment variables may be used to customize/override cassandra default properties.
-`ENV` vars should be passed when running container.
+Environment variables may be used to customize/override cassandra default properties. `ENV` vars should be passed when running container.
+Alternatively, `EXTERNAL_CONFIGURATION: "true"` can be set to skip any customizations. You may want to set this when `/etc/cassandra` is mounted as an external volume.
+
 Below you can find a list of available variables and corresponding properties.
 
 ### `cassandra.yaml`
@@ -38,4 +39,14 @@ If set to `GossipingPropertyFileSnitch`, the following variables can be used to 
 
 ### `cassandra-env.sh`
 
-**`CUSTOM_JVM_OPTS`** - Additional parameters appended to JVM_OPTS
+**`MAX_HEAP_SIZE`** - Sets the maximum heap size for the JVM ([`MAX_HEAP_SIZE`](http://docs.datastax.com/en/cassandra/2.2/cassandra/operations/opsTuneJVM.html#opsTuneJVM__tuning-the-java-heap))
+
+**`HEAP_NEWSIZE`** - The size of the young generation ([`HEAP_NEWSIZE`](http://docs.datastax.com/en/cassandra/2.2/cassandra/operations/opsTuneJVM.html#opsTuneJVM__heap-sizing-options))
+
+**`JMX_PORT`** - The JMX listen port ([`JMX_PORT`](http://docs.datastax.com/en/cassandra/2.2/cassandra/operations/opsTuneJVM.html#opsTuneJVM__jmx-options))
+
+**`LOCAL_JMX`** - By default Cassandra ships with JMX accessible *only* from localhost. To enable remote JMX connections set `LOCAL_JMX: "no"`. You may want to set additional Java properties, e.g. `com.sun.management.jmxremote.authenticate`,  `java.rmi.server.hostname`, etc. (see `CUSTOM_JVM_OPTS` for examples).
+
+**`CUSTOM_JVM_OPTS`** - Additional parameters appended to JVM_OPTS, e.g.:
+
+`CUSTOM_JVM_OPTS: "-Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=192.168.56.100"`
