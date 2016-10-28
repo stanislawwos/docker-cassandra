@@ -13,60 +13,74 @@ if [ "$1" = 'cassandra' -a "$(id -u)" = '0' ]; then
 fi
 
 if [ "$1" = 'cassandra' ]; then
-	: ${CASSANDRA_RPC_ADDRESS='0.0.0.0'}
 
-	: ${CASSANDRA_LISTEN_ADDRESS='auto'}
-	if [ "$CASSANDRA_LISTEN_ADDRESS" = 'auto' ]; then
-		CASSANDRA_LISTEN_ADDRESS="$(hostname --ip-address)"
-	fi
+	: ${EXTERNAL_CONFIGURATION='false'}
 
-	: ${CASSANDRA_BROADCAST_ADDRESS="$CASSANDRA_LISTEN_ADDRESS"}
+	if [ "$EXTERNAL_CONFIGURATION" = 'false' ]; then
 
-	if [ "$CASSANDRA_BROADCAST_ADDRESS" = 'auto' ]; then
-		CASSANDRA_BROADCAST_ADDRESS="$(hostname --ip-address)"
-	fi
-	: ${CASSANDRA_BROADCAST_RPC_ADDRESS:=$CASSANDRA_BROADCAST_ADDRESS}
+		: ${CASSANDRA_RPC_ADDRESS='0.0.0.0'}
 
-	if [ -n "${CASSANDRA_NAME:+1}" ]; then
-		: ${CASSANDRA_SEEDS:="cassandra"}
-	fi
-	: ${CASSANDRA_SEEDS:="$CASSANDRA_BROADCAST_ADDRESS"}
-
-	sed -ri 's/(- seeds:) "127.0.0.1"/\1 "'"$CASSANDRA_SEEDS"'"/' "$CASSANDRA_CONFIG/cassandra.yaml"
-
-	for yaml in \
-		broadcast_address \
-		broadcast_rpc_address \
-		cluster_name \
-		endpoint_snitch \
-		listen_address \
-		num_tokens \
-		rpc_address \
-		start_rpc \
-                authenticator \
-                authorizer \
-	; do
-		var="CASSANDRA_${yaml^^}"
-		val="${!var}"
-		if [ "$val" ]; then
-			sed -ri 's/^(# )?('"$yaml"':).*/\2 '"$val"'/' "$CASSANDRA_CONFIG/cassandra.yaml"
+		: ${CASSANDRA_LISTEN_ADDRESS='auto'}
+		if [ "$CASSANDRA_LISTEN_ADDRESS" = 'auto' ]; then
+			CASSANDRA_LISTEN_ADDRESS="$(hostname --ip-address)"
 		fi
-	done
 
-  if [ "$CASSANDRA_COMMITLOG_TOTAL" ]; then
-     sed -ri 's/^(# )?(commitlog_total_space_in_mb:).*/\2 '"$CASSANDRA_COMMITLOG_TOTAL"'/' "$CASSANDRA_CONFIG/cassandra.yaml"
-  fi
+		: ${CASSANDRA_BROADCAST_ADDRESS="$CASSANDRA_LISTEN_ADDRESS"}
 
-	for rackdc in dc rack; do
-		var="CASSANDRA_${rackdc^^}"
-		val="${!var}"
-		if [ "$val" ]; then
-			sed -ri 's/^('"$rackdc"'=).*/\1 '"$val"'/' "$CASSANDRA_CONFIG/cassandra-rackdc.properties"
+		if [ "$CASSANDRA_BROADCAST_ADDRESS" = 'auto' ]; then
+			CASSANDRA_BROADCAST_ADDRESS="$(hostname --ip-address)"
 		fi
-	done
+		: ${CASSANDRA_BROADCAST_RPC_ADDRESS:=$CASSANDRA_BROADCAST_ADDRESS}
 
-  # fix cassandra-env.sh for jvm patch version > 99
-  sed -i "s/\"\$JVM_PATCH_VERSION\"\\ \\\\<\\ \"25\"/\"\$JVM_PATCH_VERSION\"\\ \\-lt\\ \"25\"/" /etc/cassandra/cassandra-env.sh
+		if [ -n "${CASSANDRA_NAME:+1}" ]; then
+			: ${CASSANDRA_SEEDS:="cassandra"}
+		fi
+		: ${CASSANDRA_SEEDS:="$CASSANDRA_BROADCAST_ADDRESS"}
+
+		sed -ri 's/(- seeds:) "127.0.0.1"/\1 "'"$CASSANDRA_SEEDS"'"/' "$CASSANDRA_CONFIG/cassandra.yaml"
+
+		for yaml in \
+			broadcast_address \
+			broadcast_rpc_address \
+			cluster_name \
+			endpoint_snitch \
+			listen_address \
+			num_tokens \
+			rpc_address \
+			start_rpc \
+			authenticator \
+			authorizer \
+		; do
+			var="CASSANDRA_${yaml^^}"
+			val="${!var}"
+			if [ "$val" ]; then
+				sed -ri 's/^(# )?('"$yaml"':).*/\2 '"$val"'/' "$CASSANDRA_CONFIG/cassandra.yaml"
+			fi
+		done
+
+		if [ "$CASSANDRA_COMMITLOG_TOTAL" ]; then
+			sed -ri 's/^(# )?(commitlog_total_space_in_mb:).*/\2 '"$CASSANDRA_COMMITLOG_TOTAL"'/' "$CASSANDRA_CONFIG/cassandra.yaml"
+		fi
+
+		for rackdc in dc rack; do
+			var="CASSANDRA_${rackdc^^}"
+			val="${!var}"
+			if [ "$val" ]; then
+				sed -ri 's/^('"$rackdc"'=).*/\1 '"$val"'/' "$CASSANDRA_CONFIG/cassandra-rackdc.properties"
+			fi
+		done
+
+		if [ "$JMX_PORT" ]; then
+			sed -ri 's/^(JMX_PORT=).*/\1'"$JMX_PORT"'/' "$CASSANDRA_CONFIG/cassandra-env.sh"
+		fi
+
+		if [ "$LOCAL_JMX" ]; then
+			sed -ri 's/^([^#])(.*JVM_OPTS="\$JVM_OPTS -Dcom\.sun\.management\.jmxremote\.ssl)/#\1\2/' "$CASSANDRA_CONFIG/cassandra-env.sh"
+			sed -ri 's/^([^#])(.*JVM_OPTS="\$JVM_OPTS -Dcom\.sun\.management\.jmxremote\.authenticate)/#\1\2/' "$CASSANDRA_CONFIG/cassandra-env.sh"
+			sed -ri 's/^([^#])(.*JVM_OPTS="\$JVM_OPTS -Dcom\.sun\.management\.jmxremote\.password\.file)/#\1\2/' "$CASSANDRA_CONFIG/cassandra-env.sh"
+		fi
+
+	fi
 
 fi
 
