@@ -39,11 +39,11 @@ If set to `GossipingPropertyFileSnitch`, the following variables can be used to 
 
 ### `cassandra-env.sh`
 
-**`MAX_HEAP_SIZE`** - Sets the maximum heap size for the JVM ([`MAX_HEAP_SIZE`](http://docs.datastax.com/en/cassandra/2.2/cassandra/operations/opsTuneJVM.html#opsTuneJVM__tuning-the-java-heap))
+**`MAX_HEAP_SIZE`** - Sets the maximum heap size for the JVM ([`MAX_HEAP_SIZE`](http://docs.datastax.com/en/cassandra/3.0/cassandra/operations/opsTuneJVM.html#opsTuneJVM__tuning-the-java-heap))
 
-**`HEAP_NEWSIZE`** - The size of the young generation ([`HEAP_NEWSIZE`](http://docs.datastax.com/en/cassandra/2.2/cassandra/operations/opsTuneJVM.html#opsTuneJVM__heap-sizing-options))
+**`HEAP_NEWSIZE`** - The size of the young generation ([`HEAP_NEWSIZE`](http://docs.datastax.com/en/cassandra/3.0/cassandra/operations/opsTuneJVM.html#opsTuneJVM__heap-sizing-options))
 
-**`JMX_PORT`** - The JMX listen port ([`JMX_PORT`](http://docs.datastax.com/en/cassandra/2.2/cassandra/operations/opsTuneJVM.html#opsTuneJVM__jmx-options))
+**`JMX_PORT`** - The JMX listen port ([`JMX_PORT`](http://docs.datastax.com/en/cassandra/3.0/cassandra/operations/opsTuneJVM.html#opsTuneJVM__jmx-options))
 
 **`LOCAL_JMX`** - By default Cassandra ships with JMX accessible *only* from localhost. To enable remote JMX connections set `LOCAL_JMX: "no"`. You may want to set additional Java properties, e.g. `com.sun.management.jmxremote.authenticate`,  `java.rmi.server.hostname`, etc. (see `CUSTOM_JVM_OPTS` for examples).
 
