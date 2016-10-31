@@ -1,8 +1,8 @@
-FROM oberthur/docker-ubuntu-java:jdk8_8.91.14
+FROM oberthur/docker-ubuntu-java:jdk8_8.112.15
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION=1.9 \
-    CASSANDRA_VERSION=2.1.15 \
+    CASSANDRA_VERSION=3.9 \
     CASSANDRA_CONFIG=/etc/cassandra
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -22,13 +22,12 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && gosu nobody true \
         && apt-get purge -y --auto-remove ca-certificates wget \
         && apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 514A2AD631A57A16DD0047EC749D6EEC0353B12C \
+        && curl -L http://www.apache.org/dist/cassandra/KEYS | apt-key add - \
         && echo "deb http://pl.archive.ubuntu.com/ubuntu/ wily main universe" | tee -a /etc/apt/sources.list.d/python-support.list \
-        && echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list \
+        && echo "deb http://www.apache.org/dist/cassandra/debian 39x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list \
         && curl -L http://debian.datastax.com/debian/repo_key | apt-key add - \
         && apt-get update \
         && apt-get install --assume-yes \
-              python python-support \
-              dsc21=${CASSANDRA_VERSION}-1 \
               cassandra=${CASSANDRA_VERSION} \
               cassandra-tools=${CASSANDRA_VERSION} \
         && service cassandra stop && rm -rf /var/lib/cassandra/data && rm -rf /var/lib/cassandra/commit_log \
