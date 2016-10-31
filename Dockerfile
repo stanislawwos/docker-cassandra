@@ -5,7 +5,7 @@ ENV GOSU_VERSION=1.9 \
     CASSANDRA_VERSION=3.0.9 \
     CASSANDRA_CONFIG=/etc/cassandra
 
-COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 # explicitly set user/group IDs
 RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 cassandra \
