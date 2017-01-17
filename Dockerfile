@@ -33,6 +33,7 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && service cassandra stop && rm -rf /var/lib/cassandra/data && rm -rf /var/lib/cassandra/commit_log \
         && rm -rf /var/lib/apt/lists/* \
         && apt-get clean \
+        && curl -L https://github.com/oberthur/cassandra-ext/releases/download/20170116/cassandra-ext-2.0-20170116.jar > /usr/share/cassandra/lib/cassandra-ext-2.0-20170116.jar \
         && mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
