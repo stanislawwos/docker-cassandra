@@ -66,7 +66,7 @@ if [ "$1" = 'cassandra' ]; then
 			var="CASSANDRA_${rackdc^^}"
 			val="${!var}"
 			if [ "$val" ]; then
-				sed -ri 's/^('"$rackdc"'=).*/\1 '"$val"'/' "$CASSANDRA_CONFIG/cassandra-rackdc.properties"
+				sed -ri 's/^('"$rackdc"'=).*/\1'"$val"'/' "$CASSANDRA_CONFIG/cassandra-rackdc.properties"
 			fi
 		done
 
