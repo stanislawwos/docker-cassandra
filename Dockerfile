@@ -1,4 +1,4 @@
-FROM oberthur/docker-ubuntu-java:jdk8_8.102.14
+FROM oberthur/docker-ubuntu-java:jdk8_8.121.13
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION=1.9 \
