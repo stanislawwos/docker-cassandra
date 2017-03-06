@@ -2,6 +2,7 @@ FROM oberthur/docker-ubuntu-java:jdk8_8.121.13
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION=1.9 \
+    JOLOKIA_VERSION=1.3.5 \
     CASSANDRA_VERSION=3.0.9 \
     CASSANDRA_CONFIG=/etc/cassandra
 
@@ -20,7 +21,6 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
         && chmod +x /usr/local/bin/gosu \
         && gosu nobody true \
-        && apt-get purge -y --auto-remove ca-certificates wget \
         && apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 514A2AD631A57A16DD0047EC749D6EEC0353B12C \
         && echo "deb http://pl.archive.ubuntu.com/ubuntu/ wily main universe" | tee -a /etc/apt/sources.list.d/python-support.list \
         && echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list \
@@ -33,7 +33,9 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && service cassandra stop && rm -rf /var/lib/cassandra/data && rm -rf /var/lib/cassandra/commit_log \
         && rm -rf /var/lib/apt/lists/* \
         && apt-get clean \
+        && curl -L "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/$JOLOKIA_VERSION/jolokia-jvm-$JOLOKIA_VERSION-agent.jar" > /usr/share/cassandra/lib/jolokia-jvm-$JOLOKIA_VERSION-agent.jar \
         && mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" \
+        && apt-get purge -y --auto-remove ca-certificates wget \
         && chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && echo 'JVM_OPTS="$JVM_OPTS $CUSTOM_JVM_OPTS"' >> "$CASSANDRA_CONFIG"/cassandra-env.sh
