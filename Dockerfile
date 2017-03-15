@@ -33,7 +33,9 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && service cassandra stop && rm -rf /var/lib/cassandra/data && rm -rf /var/lib/cassandra/commit_log \
         && rm -rf /var/lib/apt/lists/* \
         && apt-get clean \
-        && curl -L "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/$JOLOKIA_VERSION/jolokia-jvm-$JOLOKIA_VERSION-agent.jar" > /usr/share/cassandra/lib/jolokia-jvm-$JOLOKIA_VERSION-agent.jar \
+        && mkdir /usr/local/jolokia \
+        && curl -L "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/$JOLOKIA_VERSION/jolokia-jvm-$JOLOKIA_VERSION-agent.jar" > /usr/local/jolokia/jolokia.jar \
+        && chmod 755 /usr/local/jolokia \
         && mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && apt-get purge -y --auto-remove ca-certificates wget \
         && chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
