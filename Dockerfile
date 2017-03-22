@@ -3,7 +3,7 @@ FROM oberthur/docker-ubuntu-java:jdk8_8.121.13
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION=1.9 \
     JOLOKIA_VERSION=1.3.5 \
-    CASSANDRA_VERSION=2.1.16 \
+    CASSANDRA_VERSION=2.1.17 \
     CASSANDRA_CONFIG=/etc/cassandra
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
