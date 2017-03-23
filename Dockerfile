@@ -24,9 +24,7 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && apt-get purge -y --auto-remove wget \
         && apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 514A2AD631A57A16DD0047EC749D6EEC0353B12C \
         && curl -L http://www.apache.org/dist/cassandra/KEYS | apt-key add - \
-        && echo "deb http://pl.archive.ubuntu.com/ubuntu/ wily main universe" | tee -a /etc/apt/sources.list.d/python-support.list \
         && echo "deb http://www.apache.org/dist/cassandra/debian 21x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list \
-        && curl -L http://debian.datastax.com/debian/repo_key | apt-key add - \
         && apt-get update \
         && apt-get install --assume-yes \
               cassandra=${CASSANDRA_VERSION} \
