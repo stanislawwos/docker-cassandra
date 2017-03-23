@@ -37,7 +37,7 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && mkdir /usr/local/jolokia \
         && curl -L "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/$JOLOKIA_VERSION/jolokia-jvm-$JOLOKIA_VERSION-agent.jar" > /usr/local/jolokia/jolokia.jar \
         && chmod 755 /usr/local/jolokia \
-        && curl -L https://github.com/oberthur/cassandra-ext/releases/download/20170116/cassandra-ext-2.0-20170116.jar > /usr/share/cassandra/lib/cassandra-ext-2.0-20170116.jar \
+        && curl -L https://github.com/oberthur/cassandra-ext/releases/download/20170323/cassandra-ext-2.1-20170123.jar > /usr/share/cassandra/lib/cassandra-ext-2.0-20170123.jar \
         && mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
