@@ -3,7 +3,7 @@ FROM oberthur/docker-ubuntu-java:jdk8_8.121.13_V2
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION=1.9 \
     JOLOKIA_VERSION=1.3.5 \
-    CASSANDRA_VERSION=3.0.9 \
+    CASSANDRA_VERSION=3.0.12 \
     CASSANDRA_CONFIG=/etc/cassandra
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -21,13 +21,12 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
         && chmod +x /usr/local/bin/gosu \
         && gosu nobody true \
+        && apt-get purge -y --auto-remove wget \
         && apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 514A2AD631A57A16DD0047EC749D6EEC0353B12C \
-        && echo "deb http://pl.archive.ubuntu.com/ubuntu/ wily main universe" | tee -a /etc/apt/sources.list.d/python-support.list \
-        && echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list \
-        && curl -L http://debian.datastax.com/debian/repo_key | apt-key add - \
+        && curl -L http://www.apache.org/dist/cassandra/KEYS | apt-key add - \
+        && echo "deb http://www.apache.org/dist/cassandra/debian 30x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list \
         && apt-get update \
         && apt-get install --assume-yes \
-              dsc30=${CASSANDRA_VERSION}-1 \
               cassandra=${CASSANDRA_VERSION} \
               cassandra-tools=${CASSANDRA_VERSION} \
         && service cassandra stop && rm -rf /var/lib/cassandra/data && rm -rf /var/lib/cassandra/commit_log \
@@ -37,7 +36,6 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && curl -L "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/$JOLOKIA_VERSION/jolokia-jvm-$JOLOKIA_VERSION-agent.jar" > /usr/local/jolokia/jolokia.jar \
         && chmod 755 /usr/local/jolokia \
         && mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" \
-        && apt-get purge -y --auto-remove ca-certificates wget \
         && chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && echo 'JVM_OPTS="$JVM_OPTS $CUSTOM_JVM_OPTS"' >> "$CASSANDRA_CONFIG"/cassandra-env.sh
