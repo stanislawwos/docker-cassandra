@@ -32,6 +32,7 @@ If set to `GossipingPropertyFileSnitch`, the following variables can be used to 
 **`CASSANDRA_AUTHENTICATOR`** - The authentication backend ([`authenticator`](https://docs.datastax.com/en/cassandra/3.0/cassandra/configuration/configCassandra_yaml.html#configCassandra_yaml__authenticator)):
   - `AllowAllAuthenticator` (default)
   - `PasswordAuthenticator`  
+  - `SecurityPasswordAuthenticator` (extension to standard PasswordAuthenticator - logs authentication attempts to standard log)
 
 **`CASSANDRA_AUTHORIZER`** - The authorization backend ([`authorizer`](https://docs.datastax.com/en/cassandra/3.0/cassandra/configuration/configCassandra_yaml.html#configCassandra_yaml__authorizer)):
   - `AllowAllAuthorizer` (default)
