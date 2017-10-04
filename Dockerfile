@@ -9,8 +9,8 @@ ENV GOSU_VERSION=1.10 \
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 # explicitly set user/group IDs
-RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 cassandra \
-        && chmod +x /docker-entrypoint.sh \
+#RUN        groupadd -r cassandra --gid=499 && useradd -r -g cassandra --uid=499 cassandra \
+RUN     chmod +x /docker-entrypoint.sh \
         && set -x \
         && apt-get update && apt-get install -y --no-install-recommends ca-certificates curl && rm -rf /var/lib/apt/lists/* \
         && curl -L "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" > /usr/local/bin/gosu \
@@ -33,12 +33,17 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && apt-get clean \
         && mkdir /usr/local/jolokia \
         && curl -L "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/$JOLOKIA_VERSION/jolokia-jvm-$JOLOKIA_VERSION-agent.jar" > /usr/local/jolokia/jolokia.jar \
-        && apt-get purge -y --auto-remove curl \
         && chmod 755 /usr/local/jolokia \
         && mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" \
-        && chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
+        && chown -R app:app /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
-        && echo 'JVM_OPTS="$JVM_OPTS $CUSTOM_JVM_OPTS"' >> "$CASSANDRA_CONFIG"/cassandra-env.sh
+        && echo 'JVM_OPTS="$JVM_OPTS $CUSTOM_JVM_OPTS"' >> "$CASSANDRA_CONFIG"/cassandra-env.sh \
+        && curl -L "https://github.com/oberthur/cassandra-ext/releases/download/cassandra-ext-3.0-20171003/cassandra-ext-3.0-20171003.jar" > /usr/share/cassandra/lib/cassandra-ext-3.0-20171003.jar \
+        && curl -L "http://central.maven.org/maven2/net/logstash/logback/logstash-logback-encoder/4.8/logstash-logback-encoder-4.8.jar" > /usr/share/cassandra/lib/logstash-logback-encoder-4.8.jar \
+        && curl -L "http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.6.5/jackson-core-2.6.5.jar" > /usr/share/cassandra/lib/jackson-core-2.6.5.jar \
+        && curl -L "http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.6.5/jackson-databind-2.6.5.jar" > /usr/share/cassandra/lib/jackson-databind-2.6.5.jar \
+        && curl -L "http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0.jar" > /usr/share/cassandra/lib/jackson-annotations-2.6.0.jar \
+        && apt-get purge -y --auto-remove curl 
 
 ENTRYPOINT ["/docker-entrypoint.sh", "cassandra", "-f"]
 
