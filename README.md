@@ -32,14 +32,17 @@ If set to `GossipingPropertyFileSnitch`, the following variables can be used to 
 **`CASSANDRA_AUTHENTICATOR`** - The authentication backend ([`authenticator`](https://docs.datastax.com/en/cassandra/3.0/cassandra/configuration/configCassandra_yaml.html#configCassandra_yaml__authenticator)):
   - `AllowAllAuthenticator` (default)
   - `PasswordAuthenticator`  
-  - `SecurityPasswordAuthenticator` (extension to standard PasswordAuthenticator - logs authentication attempts to standard log)
+  - `SecurityPasswordAuthenticator` (extension to standard `PasswordAuthenticator` - logs authentication attempts to standard log, requires [`SecurityCassandraRoleManager'](#SecurityCassandraRoleManager))
 
 **`CASSANDRA_AUTHORIZER`** - The authorization backend ([`authorizer`](https://docs.datastax.com/en/cassandra/3.0/cassandra/configuration/configCassandra_yaml.html#configCassandra_yaml__authorizer)):
   - `AllowAllAuthorizer` (default)
   - `CassandraAuthorizer`  
 
-### `cassandra-env.sh`
+#SecurityCassandraRoleManager **`CASSANDRA_ROLE_MANAGER`** - Part of the Authentication & Authorization backend ([`role_manager`](https://docs.datastax.com/en/cassandra/3.0/cassandra/configuration/configCassandra_yaml.html#configCassandra_yaml__role_manager)):
+  - `CassandraRoleManager` (default)
+  - `SecurityCassandraRoleManager`  
 
+### `cassandra-env.sh`
 **`MAX_HEAP_SIZE`** - Sets the maximum heap size for the JVM ([`MAX_HEAP_SIZE`](http://docs.datastax.com/en/cassandra/3.0/cassandra/operations/opsTuneJVM.html#opsTuneJVM__tuning-the-java-heap))
 
 **`HEAP_NEWSIZE`** - The size of the young generation ([`HEAP_NEWSIZE`](http://docs.datastax.com/en/cassandra/3.0/cassandra/operations/opsTuneJVM.html#opsTuneJVM__heap-sizing-options))

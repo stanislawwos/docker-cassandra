@@ -50,6 +50,7 @@ if [ "$1" = 'cassandra' ]; then
 			start_rpc \
 			authenticator \
 			authorizer \
+			role_manager \
 		; do
 			var="CASSANDRA_${yaml^^}"
 			val="${!var}"

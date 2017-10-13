@@ -3,7 +3,7 @@ FROM oberthur/docker-ubuntu-java:openjdk-8u131b11_V2
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION=1.10 \
     JOLOKIA_VERSION=1.3.7 \
-    CASSANDRA_VERSION=3.0.14 \
+    CASSANDRA_VERSION=3.0.15 \
     CASSANDRA_CONFIG=/etc/cassandra
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -38,7 +38,7 @@ RUN     chmod +x /docker-entrypoint.sh \
         && chown -R app:app /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && echo 'JVM_OPTS="$JVM_OPTS $CUSTOM_JVM_OPTS"' >> "$CASSANDRA_CONFIG"/cassandra-env.sh \
-        && curl -L "https://github.com/oberthur/cassandra-ext/releases/download/cassandra-ext-3.0-20171003/cassandra-ext-3.0-20171003.jar" > /usr/share/cassandra/lib/cassandra-ext-3.0-20171003.jar \
+        && curl -L "https://github.com/oberthur/cassandra-ext/releases/download/cassandra-ext-3.0-20171018/cassandra-ext-3.0-20171018.jar" > /usr/share/cassandra/lib/cassandra-ext-3.0-20171018.jar \
         && curl -L "http://central.maven.org/maven2/net/logstash/logback/logstash-logback-encoder/4.8/logstash-logback-encoder-4.8.jar" > /usr/share/cassandra/lib/logstash-logback-encoder-4.8.jar \
         && curl -L "http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.6.5/jackson-core-2.6.5.jar" > /usr/share/cassandra/lib/jackson-core-2.6.5.jar \
         && curl -L "http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.6.5/jackson-databind-2.6.5.jar" > /usr/share/cassandra/lib/jackson-databind-2.6.5.jar \
