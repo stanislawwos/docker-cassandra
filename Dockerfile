@@ -38,11 +38,7 @@ RUN     chmod +x /docker-entrypoint.sh \
         && chown -R app:app /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && echo 'JVM_OPTS="$JVM_OPTS $CUSTOM_JVM_OPTS"' >> "$CASSANDRA_CONFIG"/cassandra-env.sh \
-        && curl -L "https://github.com/oberthur/cassandra-ext/releases/download/cassandra-ext-3.0-20171018/cassandra-ext-3.0-20171018.jar" > /usr/share/cassandra/lib/cassandra-ext-3.0-20171018.jar \
-        && curl -L "http://central.maven.org/maven2/net/logstash/logback/logstash-logback-encoder/4.8/logstash-logback-encoder-4.8.jar" > /usr/share/cassandra/lib/logstash-logback-encoder-4.8.jar \
-        && curl -L "http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.6.5/jackson-core-2.6.5.jar" > /usr/share/cassandra/lib/jackson-core-2.6.5.jar \
-        && curl -L "http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.6.5/jackson-databind-2.6.5.jar" > /usr/share/cassandra/lib/jackson-databind-2.6.5.jar \
-        && curl -L "http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0.jar" > /usr/share/cassandra/lib/jackson-annotations-2.6.0.jar \
+        && curl -L "https://github.com/oberthur/cassandra-ext/releases/download/cassandra-ext-3.0-20171020/cassandra-ext-3.0-20171020.jar" > /usr/share/cassandra/lib/cassandra-ext-3.0-20171020.jar \
         && apt-get purge -y --auto-remove curl 
 
 ENTRYPOINT ["/docker-entrypoint.sh", "cassandra", "-f"]
