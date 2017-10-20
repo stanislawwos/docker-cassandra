@@ -36,9 +36,9 @@ If set to `GossipingPropertyFileSnitch`, the following variables can be used to 
 
 **`CASSANDRA_AUTHORIZER`** - The authorization backend ([`authorizer`](https://docs.datastax.com/en/cassandra/3.0/cassandra/configuration/configCassandra_yaml.html#configCassandra_yaml__authorizer)):
   - `AllowAllAuthorizer` (default)
-  - `CassandraAuthorizer`  
-
-# **`CASSANDRA_ROLE_MANAGER`** - Part of the Authentication & Authorization backend ([`role_manager`](https://docs.datastax.com/en/cassandra/3.0/cassandra/configuration/configCassandra_yaml.html#configCassandra_yaml__role_manager)):
+  - `CassandraAuthorizer` 
+  
+**`CASSANDRA_ROLE_MANAGER`** - Part of the Authentication & Authorization backend ([`role_manager`](https://docs.datastax.com/en/cassandra/3.0/cassandra/configuration/configCassandra_yaml.html#configCassandra_yaml__role_manager)):
   - `CassandraRoleManager` (default)
   - `SecurityCassandraRoleManager`  
 
