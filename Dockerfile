@@ -38,7 +38,7 @@ RUN     chmod +x /docker-entrypoint.sh \
         && chown -R app:app /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && echo 'JVM_OPTS="$JVM_OPTS $CUSTOM_JVM_OPTS"' >> "$CASSANDRA_CONFIG"/cassandra-env.sh \
-        && curl -L "https://github.com/oberthur/cassandra-ext/releases/download/cassandra-ext-3.0-20171020/cassandra-ext-3.0-20171020.jar" > /usr/share/cassandra/lib/cassandra-ext-3.0-20171020.jar \
+        && curl -L "https://github.com/oberthur/cassandra-ext/releases/download/cassandra-ext-3.0-20171103/cassandra-ext-3.0-20171103.jar" > /usr/share/cassandra/lib/cassandra-ext-3.0-20171103.jar \
         && apt-get purge -y --auto-remove curl 
 
 ENTRYPOINT ["/docker-entrypoint.sh", "cassandra", "-f"]
