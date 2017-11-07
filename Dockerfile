@@ -3,7 +3,7 @@ FROM oberthur/docker-ubuntu-java:openjdk-8u131b11_V2
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION=1.10 \
     JOLOKIA_VERSION=1.3.7 \
-    CASSANDRA_VERSION=2.1.18 \
+    CASSANDRA_VERSION=2.1.19 \
     CASSANDRA_CONFIG=/etc/cassandra
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -22,7 +22,7 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && chmod +x /usr/local/bin/gosu \
         && gosu nobody true \
         && apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys 514A2AD631A57A16DD0047EC749D6EEC0353B12C \
-        && curl -L http://www.apache.org/dist/cassandra/KEYS | apt-key add - \
+        && curl -L "http://www.apache.org/dist/cassandra/KEYS" | apt-key add - \
         && echo "deb http://www.apache.org/dist/cassandra/debian 21x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list \
         && apt-get update \
         && apt-get install --assume-yes \
@@ -34,7 +34,7 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && mkdir /usr/local/jolokia \
         && curl -L "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/$JOLOKIA_VERSION/jolokia-jvm-$JOLOKIA_VERSION-agent.jar" > /usr/local/jolokia/jolokia.jar \
         && chmod 755 /usr/local/jolokia \
-        && curl -L https://github.com/oberthur/cassandra-ext/releases/download/20170323/cassandra-ext-2.1-20170123.jar > /usr/share/cassandra/lib/cassandra-ext-2.0-20170123.jar \
+        && curl -L "https://github.com/oberthur/cassandra-ext/releases/download/20170323/cassandra-ext-2.1-20170123.jar" > /usr/share/cassandra/lib/cassandra-ext-2.0-20170123.jar \
         && apt-get purge -y --auto-remove curl \
         && mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" \
         && chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
