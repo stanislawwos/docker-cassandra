@@ -16,12 +16,12 @@ RUN        groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 
         && curl -L "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" > /usr/local/bin/gosu \
         && curl -L "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" > /usr/local/bin/gosu.asc \
         && export GNUPGHOME="$(mktemp -d)" \
-        && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+        && gpg --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
         && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
         && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
         && chmod +x /usr/local/bin/gosu \
         && gosu nobody true \
-        && apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 514A2AD631A57A16DD0047EC749D6EEC0353B12C \
+        && apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys 514A2AD631A57A16DD0047EC749D6EEC0353B12C \
         && curl -L "http://www.apache.org/dist/cassandra/KEYS" | apt-key add - \
         && echo "deb http://www.apache.org/dist/cassandra/debian 21x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list \
         && apt-get update \
