@@ -8,8 +8,8 @@ fi
 
 # allow the container to be started with `--user`
 if [ "$1" = 'cassandra' -a "$(id -u)" = '0' ]; then
-	chown -R cassandra /var/lib/cassandra /var/log/cassandra "$CASSANDRA_CONFIG"
-	exec gosu cassandra "$BASH_SOURCE" "$@"
+	chown -R app /var/lib/cassandra /var/log/cassandra "$CASSANDRA_CONFIG"
+	exec gosu app "$BASH_SOURCE" "$@"
 fi
 
 if [ "$1" = 'cassandra' ]; then
@@ -50,6 +50,7 @@ if [ "$1" = 'cassandra' ]; then
 			start_rpc \
 			authenticator \
 			authorizer \
+			role_manager \
 		; do
 			var="CASSANDRA_${yaml^^}"
 			val="${!var}"
