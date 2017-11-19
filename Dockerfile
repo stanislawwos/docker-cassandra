@@ -12,7 +12,7 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 #RUN        groupadd -r cassandra --gid=499 && useradd -r -g cassandra --uid=499 cassandra \
 RUN     chmod +x /docker-entrypoint.sh \
         && set -x \
-        && apt-get update && apt-get install -y --no-install-recommends ca-certificates curl && rm -rf /var/lib/apt/lists/* \
+        && apt-get update && apt-get install -y --no-install-recommends ca-certificates curl libjemalloc1 && rm -rf /var/lib/apt/lists/* \
         && curl -L "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" > /usr/local/bin/gosu \
         && curl -L "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" > /usr/local/bin/gosu.asc \
         && export GNUPGHOME="$(mktemp -d)" \
